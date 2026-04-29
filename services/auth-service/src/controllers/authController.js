@@ -32,3 +32,82 @@ exports.register = (req, res) => {
   });
 };
 
+// LOGIN
+exports.login = (req, res) => {
+  const { email, password } = req.body;
+
+  const sql = "SELECT * FROM users WHERE email = ?";
+
+  db.query(sql, [email], (err, results) => {
+    if (err) return res.status(500).json(err);
+
+    if (results.length === 0)
+      return res.status(404).json({ message: 'User not found' });
+
+    const user = results[0];
+
+    const isMatch = bcrypt.compareSync(password, user.password);
+
+    if (!isMatch)
+      return res.status(401).json({ message: 'Wrong password' });
+
+    const payload = { id: user.id, email: user.email };
+
+    const accessToken = generateAccessToken(payload);
+    const refreshToken = generateRefreshToken(payload);
+
+    const expires = new Date();
+    expires.setDate(expires.getDate() + 7);
+
+    db.query(
+      "INSERT INTO refresh_tokens (user_id, token, expires_at) VALUES (?, ?, ?)",
+      [user.id, refreshToken, expires]
+    );
+
+    res.json({ accessToken, refreshToken });
+  });
+};
+
+// REFRESH TOKEN
+exports.refreshToken = (req, res) => {
+  const { token } = req.body;
+
+  if (!token) return res.status(401).json({ message: 'No token' });
+
+  db.query(
+    "SELECT * FROM refresh_tokens WHERE token = ?",
+    [token],
+    (err, results) => {
+      if (results.length === 0)
+        return res.status(403).json({ message: 'Invalid refresh token' });
+
+      jwt.verify(token, process.env.JWT_REFRESH_SECRET, (err, user) => {
+        if (err) return res.status(403).json({ message: 'Token expired' });
+
+        const newAccessToken = generateAccessToken({
+          id: user.id,
+          email: user.email
+        });
+
+        res.json({ accessToken: newAccessToken });
+      });
+    }
+  );
+};
+
+// LOGOUT
+exports.logout = (req, res) => {
+  const { token } = req.body;
+
+  db.query(
+    "DELETE FROM refresh_tokens WHERE token = ?",
+    [token],
+    () => {
+      res.json({ message: 'Logged out' });
+    }
+  );
+};
+
+exports.profile = (req, res) => {
+  res.json({ user: req.user });
+};
