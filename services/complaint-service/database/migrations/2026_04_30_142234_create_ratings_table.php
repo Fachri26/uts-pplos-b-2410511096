@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('ratings', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('complaint_id')->constrained()->cascadeOnDelete();
+            $table->integer('rating');
+            $table->text('feedback')->nullable();
             $table->timestamps();
         });
     }
