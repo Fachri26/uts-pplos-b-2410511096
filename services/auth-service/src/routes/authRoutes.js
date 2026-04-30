@@ -6,6 +6,7 @@ const {
   login,
   refreshToken,
   logout,
+  deleteUser,
   profile
 } = require('../controllers/authController');
 
@@ -15,6 +16,7 @@ router.post('/register', register);
 router.post('/login', login);
 router.post('/refresh', refreshToken);
 router.post('/logout', logout);
+router.delete('/delete', authMiddleware, deleteUser);
 router.get('/profile', authMiddleware, profile);
 
 module.exports = router;

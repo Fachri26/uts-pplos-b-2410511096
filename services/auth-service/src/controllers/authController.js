@@ -16,20 +16,40 @@ const generateRefreshToken = (user) => {
 
 // REGISTER
 exports.register = (req, res) => {
-  const { name, email, password } = req.body;
+    const { name, email, password } = req.body;
 
-  if (!name || !email || !password)
-    return res.status(400).json({ message: 'All fields required' });
+    if (!name || !email || !password) {
+        return res.status(400).json({ message: 'Name, email, and password are required' });
+    }
 
-  const hashedPassword = bcrypt.hashSync(password, 10);
+    const sqlCheck = "SELECT * FROM users WHERE email = ?";
+    
+    db.query(sqlCheck, [email], (err, results) => {
+        if (err) return res.status(500).json(err);
 
-  const sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
+        const hashedPassword = bcrypt.hashSync(password, 10);
 
-  db.query(sql, [name, email, hashedPassword], (err) => {
-    if (err) return res.status(500).json(err);
+        if (results.length > 0) {
+            const existingUser = results[0];
 
-    res.status(201).json({ message: 'User registered' });
-  });
+            if (existingUser.deleted_at === null) {
+                return res.status(400).json({ message: 'Email already in use' });
+            }
+
+            const sqlRestore = "UPDATE users SET name = ?, password = ?, deleted_at = NULL WHERE id = ?";
+            db.query(sqlRestore, [name, hashedPassword, existingUser.id], (err) => {
+                if (err) return res.status(500).json(err);
+                return res.status(200).json({ message: 'Account reactivated successfully' });
+            });
+
+        } else {
+            const sqlInsert = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
+            db.query(sqlInsert, [name, email, hashedPassword], (err) => {
+                if (err) return res.status(500).json(err);
+                return res.status(201).json({ message: 'User registered' });
+            });
+        }
+    });
 };
 
 // LOGIN
@@ -74,25 +94,31 @@ exports.refreshToken = (req, res) => {
 
   if (!token) return res.status(401).json({ message: 'No token' });
 
-  db.query(
-    "SELECT * FROM refresh_tokens WHERE token = ?",
-    [token],
-    (err, results) => {
-      if (results.length === 0)
-        return res.status(403).json({ message: 'Invalid refresh token' });
+  const sql = `
+    SELECT refresh_tokens.*, users.deleted_at 
+    FROM refresh_tokens 
+    JOIN users ON refresh_tokens.user_id = users.id 
+    WHERE refresh_tokens.token = ? AND users.deleted_at IS NULL
+  `;
 
-      jwt.verify(token, process.env.JWT_REFRESH_SECRET, (err, user) => {
-        if (err) return res.status(403).json({ message: 'Token expired' });
+  db.query(sql, [token], (err, results) => {
+    if (err) return res.status(500).json({ message: 'Server error' });
 
-        const newAccessToken = generateAccessToken({
-          id: user.id,
-          email: user.email
-        });
-
-        res.json({ accessToken: newAccessToken });
-      });
+    if (results.length === 0) {
+      return res.status(403).json({ message: 'Invalid refresh token or user deleted' });
     }
-  );
+
+    jwt.verify(token, process.env.JWT_REFRESH_SECRET, (err, user) => {
+      if (err) return res.status(403).json({ message: 'Token expired' });
+
+      const newAccessToken = generateAccessToken({
+        id: user.id,
+        email: user.email
+      });
+
+      res.json({ accessToken: newAccessToken });
+    });
+  });
 };
 
 // LOGOUT
@@ -110,14 +136,18 @@ exports.logout = (req, res) => {
 
 //DELETEUSER (SOFT DELETE)
 exports.deleteUser = (req, res) => {
-  const userId = req.user.id; // Diambil dari middleware auth
+  const userId = req.user.id;
 
   const sql = "UPDATE users SET deleted_at = NOW() WHERE id = ?";
 
   db.query(sql, [userId], (err, result) => {
     if (err) return res.status(500).json(err);
     
-    res.json({ message: 'User account deactivated (Soft Delete)' });
+    const sqlLogout = "DELETE FROM refresh_tokens WHERE user_id = ?";
+    db.query(sqlLogout, [userId], (err) => {
+      if (err) console.error("Failed to clear tokens on delete:", err);
+      res.json({ message: 'User account deactivated and all sessions cleared' });
+    });
   });
 };
 
