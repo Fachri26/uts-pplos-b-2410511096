@@ -36,7 +36,7 @@ exports.register = (req, res) => {
 exports.login = (req, res) => {
   const { email, password } = req.body;
 
-  const sql = "SELECT * FROM users WHERE email = ? AND delete_at IS NULL";
+  const sql = "SELECT * FROM users WHERE email = ? AND deleted_at IS NULL";
 
   db.query(sql, [email], (err, results) => {
     if (err) return res.status(500).json(err);
