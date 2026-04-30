@@ -36,7 +36,7 @@ exports.register = (req, res) => {
 exports.login = (req, res) => {
   const { email, password } = req.body;
 
-  const sql = "SELECT * FROM users WHERE email = ?";
+  const sql = "SELECT * FROM users WHERE email = ? AND delete_at IS NULL";
 
   db.query(sql, [email], (err, results) => {
     if (err) return res.status(500).json(err);
@@ -108,6 +108,20 @@ exports.logout = (req, res) => {
   );
 };
 
+//DELETEUSER (SOFT DELETE)
+exports.deleteUser = (req, res) => {
+  const userId = req.user.id; // Diambil dari middleware auth
+
+  const sql = "UPDATE users SET deleted_at = NOW() WHERE id = ?";
+
+  db.query(sql, [userId], (err, result) => {
+    if (err) return res.status(500).json(err);
+    
+    res.json({ message: 'User account deactivated (Soft Delete)' });
+  });
+};
+
+//PROFILE
 exports.profile = (req, res) => {
   res.json({ user: req.user });
 };
