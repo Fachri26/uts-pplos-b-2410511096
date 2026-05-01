@@ -1,6 +1,16 @@
-PORT=3003
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
 
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=
-DB_NAME=disposition_db
+const routes = require('./routes/dispositionRoutes');
+
+const app = express();
+
+app.use(cors());
+app.use(express.json());
+
+app.use('/dispositions', routes);
+
+app.listen(process.env.PORT, () => {
+  console.log(`Disposition Service running on ${process.env.PORT}`);
+});
