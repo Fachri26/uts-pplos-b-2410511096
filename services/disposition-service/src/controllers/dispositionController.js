@@ -1,11 +1,25 @@
 const db = require('../config/db');
+const axios = require('axios');
 
 // CREATE DISPOSITION
-exports.createDisposition = (req, res) => {
+exports.createDisposition = async (req, res) => {
   const { complaint_id, unit_id, notes } = req.body;
 
   if (!complaint_id || !unit_id) {
     return res.status(400).json({ message: 'Missing data' });
+  }
+
+  try {
+    const response = await axios.get(
+      `http://localhost:8000/api/complaints/${complaint_id}`
+    );
+
+    if (!response.data) {
+      return res.status(404).json({ message: 'Complaint not found' });
+    }
+
+  } catch (err) {
+    return res.status(500).json({ message: 'Complaint service error' });
   }
 
   const status = 'forwarded';
@@ -15,12 +29,6 @@ exports.createDisposition = (req, res) => {
     [complaint_id, unit_id, status, notes],
     (err, result) => {
       if (err) return res.status(500).json(err);
-
-      // log activity
-      db.query(
-        "INSERT INTO logs (disposition_id, action, description) VALUES (?, ?, ?)",
-        [result.insertId, 'CREATE', 'Disposition created']
-      );
 
       res.status(201).json({
         message: 'Disposition created',
