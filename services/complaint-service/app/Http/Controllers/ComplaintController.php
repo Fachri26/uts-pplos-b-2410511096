@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Complaint;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class ComplaintController extends Controller
 {
@@ -27,19 +28,39 @@ class ComplaintController extends Controller
 
     // CREATE
     public function store(Request $request)
-    {
-        $request->validate([
-            'user_id' => 'required',
-            'title' => 'required',
-            'description' => 'required',
-            'category_id' => 'required',
-            'status_id' => 'required'
-        ]);
+{
+    $token = $request->bearerToken();
 
-        $complaint = Complaint::create($request->all());
-
-        return response()->json($complaint, 201);
+    if (!$token) {
+        return response()->json(['message' => 'Unauthorized'], 401);
     }
+
+    $response = Http::withToken($token)
+        ->get('http://localhost:3001/auth/profile');
+
+    if ($response->failed()) {
+        return response()->json(['message' => 'Invalid user'], 401);
+    }
+
+    $user = $response->json()['user'];
+
+    $request->validate([
+        'title' => 'required',
+        'description' => 'required',
+        'category_id' => 'required',
+        'status_id' => 'required'
+    ]);
+
+    $complaint = Complaint::create([
+        'user_id' => $user['id'],
+        'title' => $request->title,
+        'description' => $request->description,
+        'category_id' => $request->category_id,
+        'status_id' => $request->status_id
+    ]);
+
+    return response()->json($complaint, 201);
+}
 
     // DETAIL
     public function show($id)
