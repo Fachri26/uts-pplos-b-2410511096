@@ -102,7 +102,7 @@ npm run dev
 
 ---
 
-#### 🧾 Complaint Service - Laravel (Port 8000)
+#### Complaint Service - Laravel (Port 8000)
 
 ```bash
 cd services/complaint-service
@@ -157,47 +157,47 @@ http://localhost:3000/
 
 ### Auth Service
 
-| Method | Endpoint                  |
-| ------ | ------------------------- |
-| POST   | /api/auth/register        |
-| POST   | /api/auth/login           |
-| POST   | /api/auth/refresh         |
-| POST   | /api/auth/logout          |
-| GET    | /api/auth/profile         |
-| GET    | /api/auth/google          |
-| GET    | /api/auth/google/callback |
+| Method | Endpoint                  
+| ------ | ------------------------- 
+| POST   | http://localhost:3000/auth/auth/register        
+| POST   | http://localhost:3000/auth/auth/login           
+| POST   | http://localhost:3000/auth/auth/refresh         
+| POST   | http://localhost:3000/auth/auth/logout          
+| GET    | http://localhost:3000/auth/auth/profile         
+| GOOGLE | /api/auth/google          
+| DELETE | http://localhost:3000/auth/auth/delete 
 
 ---
 
 ### Complaint Service
 
-| Method | Endpoint                    |
-| ------ | --------------------------- |
-| GET    | /api/complaints             |
-| POST   | /api/complaints             |
-| GET    | /api/complaints/{id}        |
-| PUT    | /api/complaints/{id}        |
-| DELETE | /api/complaints/{id}        |
-| POST   | /api/complaints/{id}/rating |
+| Method | Endpoint                    
+| ------ | --------------------------- 
+| GET    | http://localhost:3000/complaints/complaints             
+| POST   | http://localhost:3000/complaints/complaints             
+| GET    | http://localhost:3000/complaints/complaints/{id}        
+| PUT    | http://localhost:3000/complaints/complaints/{id}        
+| DELETE | http://localhost:3000/complaints/complaints/{id}        
+| POST   | http://localhost:3000/complaints/complaints/{id}/rating 
 
 
 ---
 
 ### Disposition Service
 
-| Method | Endpoint                         |
-| ------ | -------------------------------- |
-| POST   | /api/dispositions                |
-| GET    | /api/dispositions/complaint/{id} |
-| PUT    | /api/dispositions/{id}           |
-| GET    | /api/dispositions/units          |
+| Method | Endpoint                         
+| ------ | -------------------------------- 
+| POST   | http://localhost:3000/dispositions/dispositions                
+| GET    | http://localhost:3000/dispositions/dispositions/complaint/{id} 
+| PUT    | http://localhost:3000/dispositions/dispositions/{id}           
+| GET    | http://localhost:3000/dispositions/dispositions/units          
 
 ---
 
 ### Notification Service
 
-| Method | Endpoint                     |
-| ------ | ---------------------------- |
-| POST   | /api/notifications           |
-| GET    | /api/notifications/user/{id} |
+| Method | Endpoint                     
+| ------ | ---------------------------- 
+| POST   | http://localhost:3000/notifications/notifications/user/ (dipanggil otomatis di service disposition saat membuat data)         
+| GET    | http://localhost:3000/notifications/notifications/user/{id} 
 
