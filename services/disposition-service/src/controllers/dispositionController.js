@@ -9,6 +9,8 @@ exports.createDisposition = async (req, res) => {
     return res.status(400).json({ message: 'Missing data' });
   }
 
+  let complaint;
+
   try {
     const response = await axios.get(
       `http://localhost:8000/api/complaints/${complaint_id}`
@@ -18,17 +20,29 @@ exports.createDisposition = async (req, res) => {
       return res.status(404).json({ message: 'Complaint not found' });
     }
 
+    complaint = response.data;
+
   } catch (err) {
     return res.status(500).json({ message: 'Complaint service error' });
   }
 
   const status = 'forwarded';
 
-  db.query(
+    db.query(
     "INSERT INTO dispositions (complaint_id, unit_id, status, notes) VALUES (?, ?, ?, ?)",
     [complaint_id, unit_id, status, notes],
-    (err, result) => {
+    async (err, result) => { 
       if (err) return res.status(500).json(err);
+
+      try {
+        await axios.post('http://localhost:3004/notifications', {
+          user_id: complaint.user_id,
+          title: 'Pengaduan didisposisikan',
+          message: 'Pengaduan Anda telah diteruskan ke unit terkait'
+        });
+      } catch (e) {
+        console.log('Notification error:', e.message);
+      }
 
       res.status(201).json({
         message: 'Disposition created',
@@ -67,7 +81,36 @@ exports.updateDisposition = (req, res) => {
         [id, 'UPDATE', `Status changed to ${status}`]
       );
 
-      res.json({ message: 'Updated' });
+      db.query(
+        "SELECT complaint_id FROM dispositions WHERE id=?",
+        [id],
+        async (err, result) => {
+          if (err || result.length === 0) {
+            return res.json({ message: 'Updated (no notification)' });
+          }
+
+          const complaint_id = result[0].complaint_id;
+
+          try {
+            const response = await axios.get(
+              `http://localhost:8000/api/complaints/${complaint_id}`
+            );
+
+            const complaint = response.data;
+
+            await axios.post('http://localhost:3004/notifications', {
+              user_id: complaint.user_id,
+              title: 'Status diperbarui',
+              message: `Status pengaduan berubah menjadi ${status}`
+            });
+
+          } catch (e) {
+            console.log('Notification error:', e.message);
+          }
+
+          res.json({ message: 'Updated' });
+        }
+      );
     }
   );
 };
