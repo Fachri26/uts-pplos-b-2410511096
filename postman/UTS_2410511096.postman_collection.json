@@ -1,0 +1,489 @@
+{
+  "info": {
+    "_postman_id": "b3d8c678-bf1e-4010-ad41-b754018ba5b7",
+    "name": "UTS_2410511096",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "45092424",
+    "_collection_link": "https://go.postman.co/collection/45092424-b3d8c678-bf1e-4010-ad41-b754018ba5b7?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "register",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/auth/auth/register",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "auth",
+            "auth",
+            "register"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"email\": \"test2@gmail.com\",\r\n  \"password\": \"password123\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/auth/auth/login",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "auth",
+            "auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "refresh",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/auth/auth/refresh",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "auth",
+            "auth",
+            "refresh"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "logout",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/auth/auth/logout",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "auth",
+            "auth",
+            "logout"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "delete",
+      "request": {
+        "method": "DELETE",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/auth/auth/delete",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "auth",
+            "auth",
+            "delete"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "profile",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/auth/auth/profile",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "auth",
+            "auth",
+            "profile"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "google",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/auth/auth/google",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "auth",
+            "auth",
+            "google"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "complaint",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ0ZXN0MkBnbWFpbC5jb20iLCJpYXQiOjE3Nzc3MDc0MjksImV4cCI6MTc3NzcwODMyOX0.TulWo3nF-j3y1fRNqq2Wk8ktMCFoAfywDr-pZnN-Z_A",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"test3\",\r\n  \"description\": \"test3\",\r\n  \"category_id\": 1,\r\n  \"status_id\": 1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/complaints/complaints",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "complaints",
+            "complaints"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "complaint GET",
+      "protocolProfileBehavior": {
+        "disableBodyPruning": true
+      },
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ0ZXN0MkBnbWFpbC5jb20iLCJpYXQiOjE3Nzc3MDc0MjksImV4cCI6MTc3NzcwODMyOX0.TulWo3nF-j3y1fRNqq2Wk8ktMCFoAfywDr-pZnN-Z_A",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "GET",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"test3\",\r\n  \"description\": \"test3\",\r\n  \"category_id\": 1,\r\n  \"status_id\": 1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/complaints/complaints",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "complaints",
+            "complaints"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "complaint PUT",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ0ZXN0MkBnbWFpbC5jb20iLCJpYXQiOjE3Nzc3MDc0MjksImV4cCI6MTc3NzcwODMyOX0.TulWo3nF-j3y1fRNqq2Wk8ktMCFoAfywDr-pZnN-Z_A",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"Fasilitas belajar mengajar\",\r\n  \"description\": \"Projector terkadang tidak dapat menyala\",\r\n  \"category_id\": 1,\r\n  \"status_id\": 1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/complaints/complaints",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "complaints",
+            "complaints"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "complaint DELETE",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ0ZXN0MkBnbWFpbC5jb20iLCJpYXQiOjE3Nzc3MDc0MjksImV4cCI6MTc3NzcwODMyOX0.TulWo3nF-j3y1fRNqq2Wk8ktMCFoAfywDr-pZnN-Z_A",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "DELETE",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"title\": \"test3\",\r\n  \"description\": \"test3\",\r\n  \"category_id\": 1,\r\n  \"status_id\": 1\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/complaints/complaints/nomor id",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "complaints",
+            "complaints",
+            "nomor id"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Rating",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n    \"rating\": 5,\r\n    \"feedback\": \"Pelayanannya sangat cepat dan solutif!\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/complaints/complaints/nomor id/rating",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "complaints",
+            "complaints",
+            "nomor id",
+            "rating"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "disposition",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ0ZXN0MkBnbWFpbC5jb20iLCJpYXQiOjE3Nzc3MDc0MjksImV4cCI6MTc3NzcwODMyOX0.TulWo3nF-j3y1fRNqq2Wk8ktMCFoAfywDr-pZnN-Z_A",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"complaint_id\": 3,\r\n  \"unit_id\": 1,\r\n  \"notes\": \"masalah pada projector kelas\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/dispositions/dispositions",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "dispositions",
+            "dispositions"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "show dr complaint",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/dispositions/dispositions/complaint/no id",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "dispositions",
+            "dispositions",
+            "complaint",
+            "no id"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "upadate status",
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiZW1haWwiOiJ0ZXN0MkBnbWFpbC5jb20iLCJpYXQiOjE3Nzc3MDc0MjksImV4cCI6MTc3NzcwODMyOX0.TulWo3nF-j3y1fRNqq2Wk8ktMCFoAfywDr-pZnN-Z_A",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "PUT",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\r\n  \"status\": \"selesai\",\r\n  \"notes\": \"sudah selesai\"\r\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "http://localhost:3000/dispositions/dispositions/1",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "dispositions",
+            "dispositions",
+            "1"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "list unit",
+      "request": {
+        "method": "GET",
+        "header": []
+      },
+      "response": []
+    },
+    {
+      "name": "notification",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:3000/notifications/notifications/user/2",
+          "protocol": "http",
+          "host": [
+            "localhost"
+          ],
+          "port": "3000",
+          "path": [
+            "notifications",
+            "notifications",
+            "user",
+            "2"
+          ]
+        }
+      },
+      "response": []
+    }
+  ]
+}
