@@ -5,25 +5,29 @@ const authMiddleware = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
-// AUTH SERVICE (tanpa jwt)
+// AUTH SERVICE
 router.use('/auth', createProxyMiddleware({
   target: 'http://localhost:3001',
-  changeOrigin: true
+  changeOrigin: true,
+  logLevel: 'debug',
+  pathRewrite: {
+    '^/auth': '/auth'
+  }
 }));
 
 // COMPLAINT SERVICE
 router.use('/complaints',
   authMiddleware,
   createProxyMiddleware({
-    target: 'http://127.0.0.1:8000/api',
+    target: 'http://127.0.0.1:8000',
     changeOrigin: true,
     pathRewrite: {
-      '^/complaints': '/complaints'
+      '^/complaints': '/api/complaints'
     }
   })
 );
 
-// DISPOSITION SERVICE
+// DISPOSITION
 router.use('/dispositions',
   authMiddleware,
   createProxyMiddleware({
@@ -32,7 +36,7 @@ router.use('/dispositions',
   })
 );
 
-// NOTIFICATION SERVICE (tanpa jwt)
+// NOTIFICATION
 router.use('/notifications',
   createProxyMiddleware({
     target: 'http://localhost:3004',
